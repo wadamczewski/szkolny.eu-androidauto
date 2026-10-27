@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <!-- No backups: the account list holds the Synergia password (encrypted with a device key). -->
+    <application
+        android:name=".DziennikApplication"
+        android:allowBackup="false"
+        android:fullBackupContent="false"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="false"
+        android:theme="@style/Theme.Dziennik">
+
+        <!-- Car screens (Car App Library). The category comes from the build flavor. -->
+        <service
+            android:name=".car.DziennikCarAppService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="androidx.car.app.CarAppService" />
+                <category android:name="${carCategory}" />
+            </intent-filter>
+        </service>
+        <meta-data
+            android:name="androidx.car.app.minCarApiLevel"
+            android:value="1" />
+
+        <!-- Reply / mark-as-read from message notifications (no UI, as Android Auto requires). -->
+        <receiver
+            android:name=".messages.MessageActionReceiver"
+            android:exported="false" />
+    </application>
+</manifest>
